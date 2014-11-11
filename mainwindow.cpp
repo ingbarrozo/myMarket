@@ -11,11 +11,13 @@ MainWindow::MainWindow(QWidget *parent)
     showFullScreen();
     showMaximized();
 
-    inventorySection();
-    salesSection();
+    QDockWidget* invetoriWidget = inventorySection();
+    salesSection(invetoriWidget);
     reportSection();
     QWidget *ctrWidget = new QWidget;
     setCentralWidget(ctrWidget);
+    setDockOptions(AllowTabbedDocks);
+    setDockOptions(ForceTabbedDocks);
 }
 
 MainWindow::~MainWindow()
@@ -23,7 +25,7 @@ MainWindow::~MainWindow()
     cout << "MainWindow destroyed." <<endl;
 }
 
-void MainWindow::inventorySection()
+QDockWidget *MainWindow::inventorySection()
 {
     //QPushButton
     QPushButton *btnOpenReport = new QPushButton("Report");
@@ -37,12 +39,14 @@ void MainWindow::inventorySection()
     widget->setLayout(layout);
 
     QDockWidget *dockWidget = new QDockWidget(tr("Inventario"), this);
-    dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea);
     dockWidget->setWidget(widget);
-    addDockWidget(Qt::RightDockWidgetArea, dockWidget);
+    addDockWidget(Qt::LeftDockWidgetArea, dockWidget);
+
+    return dockWidget;
 }
 
-void MainWindow::salesSection()
+void MainWindow::salesSection(QDockWidget *firstWidget)
 {
     //TextBox
     QLineEdit *lnNum1 = new QLineEdit;
@@ -78,10 +82,14 @@ void MainWindow::salesSection()
     widget->setLayout(layout);
 
     QDockWidget *dockWidget = new QDockWidget(tr("Venta"), this);
-    dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    dockWidget->setFeatures(QDockWidget::DockWidgetMovable);
+    dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea);
+//    dockWidget->setFeatures(QDockWidget::DockWidgetMovable);
     dockWidget->setWidget(widget);
     addDockWidget(Qt::LeftDockWidgetArea, dockWidget);
+    tabifyDockWidget(dockWidget, firstWidget);
+    dockWidget->setVisible(true);
+    dockWidget->setFocus();
+    dockWidget->raise();
 }
 
 void MainWindow::reportSection()
@@ -110,16 +118,15 @@ void MainWindow::testMessage()
 
 void MainWindow::focusChanged(QWidget* old, QWidget* now)
 {
-    QWidget *wid = QApplication::focusWidget();
-    QDockWidget *dock = 0;
+//    QWidget *wid = QApplication::focusWidget();
+//    QDockWidget *dock = 0;
 
-    dock = qobject_cast<QDockWidget*>(wid);
-    if (!dock)
-    {
-        cout << "noup" <<endl;
-
-        QLayout *widget2 = qobject_cast<QLayout *>(wid->parent());
-        string s = typeid(widget2).name();
-        setLayout(widget2);
-    }
+//    dock = qobject_cast<QDockWidget*>(now);
+//    if (!dock)
+//    {
+//        cout << "noup" <<endl;
+//        QWidget *widget2 = qobject_cast<QWidget *>(now->parent());
+//        string s = typeid(widget2).name();
+//        cout << s <<endl;
+//    }
 }

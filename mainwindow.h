@@ -15,8 +15,8 @@ public slots:
     void focusChanged(QWidget* old, QWidget* now);
 
 private:
-    void inventorySection();
-    void salesSection();
+    QDockWidget* inventorySection();
+    void salesSection(QDockWidget * firstWidget);
     void reportSection();
 
 public:
