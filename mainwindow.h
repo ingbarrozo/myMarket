@@ -18,6 +18,7 @@ private:
     QDockWidget* inventorySection();
     void salesSection(QDockWidget * firstWidget);
     void reportSection();
+    QWidget *setMainWidget();
 
 public:
     MainWindow(QWidget *parent = 0);
